@@ -1,0 +1,1 @@
+# lucene-analyzer-tester
