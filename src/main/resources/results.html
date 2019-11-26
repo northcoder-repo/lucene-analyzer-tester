@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Results</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            html, body {
+                font-family: Verdana,sans-serif;
+                font-size: 12px;
+            }
+            body {
+                background-color: linen;
+            }
+
+            table, tr, td {
+                border-style: solid;
+                border-collapse: collapse;
+                border-color: grey;
+                border-width: 1px;
+                padding: 5px;
+            }
+            
+            div.header {
+                font-size: 15px;
+                font-weight: bold;
+                padding: 5px;
+            }
+
+            span.artem-hilite {
+                background-color: #FFFF00;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Lucene Tests - Input Data:</h2>
+        <div data-th-each="item : ${rawData}">
+            <pre style="font-size: 18px; margin-left: 15px;" 
+                 data-th-text="${item}"></pre>
+        </div>
+        <h2>Lucene Tests - Results:</h2>
+        <div data-th-each="result,iterStat : ${results}">
+            <div class="header" 
+                 data-th-text="'Test ' + (${iterStat.index} +1) + ' - ' + ${result.testID}">
+                
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Indexed terms</td>
+                        <td data-th-text="${result.indexedTerms}"></td>
+                    </tr>
+                    <tr>
+                        <td>Search term</td>
+                        <td data-th-text="${result.searchTerm}"></td>
+                    </tr>
+                    <tr>
+                        <td>Query</td>
+                        <td data-th-text="${result.query}"></td>
+                    </tr>
+                <th-block data-th-if="${#lists.isEmpty(result.matches)}">
+                    <tr>
+                        <td>Match</td>
+                        <td>[no matches found]</td>
+                    </tr>
+                </th-block>
+                <th-block data-th-if="${not #lists.isEmpty(result.matches)}"
+                          data-th-each="match,iterStat : ${result.matches}">
+                    <tr>
+                        <td data-th-text="'Match ' + (${iterStat.index} +1)"></td>
+                        <td data-th-utext="${match.highlightedMatch}"></td>
+                    </tr>                    
+                    <tr>
+                        <td data-th-text="'Score ' + (${iterStat.index} +1)"></td>
+                        <td data-th-utext="${match.score}"></td>
+                    </tr>                    
+                </th-block>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </body>
+</html>
